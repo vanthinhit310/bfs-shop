@@ -1,9 +1,9 @@
 <template>
     <section class="home-wrapper">
         <TopSlide />
-        <ProductCategories />
-        <SellingProducts />
-        <FeaturedProducts />
+        <!--        <ProductCategories />-->
+        <!--        <SellingProducts />-->
+        <!--        <FeaturedProducts />-->
         <!--        <ProductList />-->
     </section>
 </template>

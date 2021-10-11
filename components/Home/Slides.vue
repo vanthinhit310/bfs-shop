@@ -5,8 +5,8 @@
             <template v-if="slides.length">
                 <VueSlickCarousel :autoplaySpeed="6000" :speed="800" :autoplay="true" :touchMove="false" :draggable="false" :arrows="true" :dots="true">
                     <div v-for="(item, index) in slides" :key="index" class="slide-item">
-                        <a class="d-block" :href="_.get(item, 'link', 'javascript:void(0);')">
-                            <img class="img-fluid w-100 d-block" alt="Slide" :src="_.get(item, 'image', '')" />
+                        <a class="d-block" :href="item.link || 'javascript:void(0);'">
+                            <img class="img-fluid w-100 d-block" alt="Slide" :src="item.image || ''" />
                         </a>
                     </div>
                 </VueSlickCarousel>
@@ -35,26 +35,21 @@ export default {
             error: ""
         };
     },
-    created() {
-        this.fetchSlides();
+    async fetch() {
+        try {
+            this.processing = true;
+            const response = await this.getHomeSlides();
+            const slides = _.get(response.data, "slides", []);
+            if (!!slides) {
+                this.slides = slides;
+            }
+        } catch (e) {
+            console.log(e.message);
+        }
+        this.processing = false;
     },
     methods: {
-        ...mapActions("home", ["getHomeSlides"]),
-        async fetchSlides() {
-            let self = this;
-            try {
-                self.processing = true;
-                const response = await self.getHomeSlides();
-                console.log(_.get(response, "slides", []));
-                const slides = _.get(response, "slides", []);
-                if (!!slides) {
-                    this.slides = slides;
-                }
-            } catch (e) {
-                console.log(e.message);
-            }
-            self.processing = false;
-        }
+        ...mapActions("home", ["getHomeSlides"])
     }
 };
 </script>

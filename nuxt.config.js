@@ -1,3 +1,4 @@
+import webpack from "webpack";
 const apiEndpoint = process.env.RUNNING_MODE === "production" ? process.env.PRODUCTION_API_ENDPOINT : process.env.DEV_API_ENDPOINT;
 
 export default {
@@ -71,7 +72,12 @@ export default {
     build: {
         loaders: {
             less: { javascriptEnabled: true }
-        }
+        },
+        plugins: [
+            new webpack.ProvidePlugin({
+                _: "lodash"
+            })
+        ]
     },
     loading: {
         color: "#ee4d2d"

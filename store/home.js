@@ -49,14 +49,16 @@ export const actions = {
     async subscribeNewsletter({ commit }, payload) {
         return await this.$axios.post("newsletter/subscribe", payload);
     },
-
     async getSettings({ commit }) {
-        const response = await this.$axios.get("settings/get");
-        const settings = _.get(response, "settings");
-        if (settings) {
-            commit("setSettings", settings);
-        }
-
-        return response;
+        return await this.$axios.get("settings/get");
     }
+    // async getSettings({ commit }) {
+    //     const response = await this.$axios.get("settings/get");
+    //     const settings = _.get(response.data, "settings");
+    //     if (settings) {
+    //         commit("setSettings", settings);
+    //     }
+    //
+    //     return response;
+    // }
 };
