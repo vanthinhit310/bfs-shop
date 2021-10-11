@@ -56,5 +56,9 @@ export default {
         loaders: {
             less: { javascriptEnabled: true }
         }
-    }
+    },
+    loading: {
+        color: "#ee4d2d"
+    },
+    pageTransition: "page"
 };
