@@ -38,12 +38,9 @@ export default {
         } catch (e) {
             console.log(e.message);
         }
+
+        await this.fetchProductCategories();
     },
-    // async fetch() {
-    //     console.log(2234);
-    //     await this.getSettings();
-    //     await this.fetchProductCategories();
-    // },
     computed: {
         ...mapGetters({
             isLoading: "baseComponents/getLoadingState"
@@ -59,7 +56,6 @@ export default {
         }),
         async fetchProductCategories() {
             try {
-                this.setSubLoading(true);
                 const response = await this.getProductCategories();
                 const categories = _.get(response.data, "categories", []);
                 if (!!categories) {
@@ -68,7 +64,6 @@ export default {
             } catch (e) {
                 console.log(e.message);
             }
-            this.setSubLoading(false);
         }
     }
 };

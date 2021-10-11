@@ -52,13 +52,4 @@ export const actions = {
     async getSettings({ commit }) {
         return await this.$axios.get("settings/get");
     }
-    // async getSettings({ commit }) {
-    //     const response = await this.$axios.get("settings/get");
-    //     const settings = _.get(response.data, "settings");
-    //     if (settings) {
-    //         commit("setSettings", settings);
-    //     }
-    //
-    //     return response;
-    // }
 };

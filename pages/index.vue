@@ -1,7 +1,7 @@
 <template>
     <section class="home-wrapper">
         <TopSlide />
-        <!--        <ProductCategories />-->
+        <ProductCategories />
         <!--        <SellingProducts />-->
         <!--        <FeaturedProducts />-->
         <!--        <ProductList />-->

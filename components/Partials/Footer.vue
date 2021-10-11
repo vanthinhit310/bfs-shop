@@ -1,7 +1,7 @@
 <template>
     <section class="footer-wrapper">
         <div class="container">
-            <a-spin :spinning="processing">
+            <a-spin :spinning="false">
                 <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
                 <div class="footer-content">
                     <div class="footer-catrgories">
@@ -102,7 +102,6 @@ export default {
     name: "Footer",
     data() {
         return {
-            processing: true,
             contactVisible: false,
             newsletterVisible: false
         };

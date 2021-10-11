@@ -1,19 +1,21 @@
 <template>
     <section class="product-categories">
         <div class="container">
-            <a-spin :spinning="subLoading">
+            <a-spin :spinning="false">
                 <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
                 <div class="categories-content">
                     <template v-if="categories.length">
                         <div class="section-header">Danh mục</div>
                         <VueSlickCarousel v-bind="settings">
                             <div v-for="(item, index) in categories" :key="index" class="category-item">
-                                <router-link :to="{ name: 'product-category', params: { slug: _.get(item, 'slug') } }">
+                                <!--                                <router-link :to="{ name: 'product-category', params: { slug: _.get(item, 'slug') } }">-->
+                                <a href="">
                                     <span class="image">
-                                        <img alt="Category" class="img-fluid" :src="_.get(item, 'image')" />
+                                        <img alt="Category" class="img-fluid" :src="item.image || ''" />
                                     </span>
-                                    <span class="name">{{ _.get(item, "name") }}</span>
-                                </router-link>
+                                    <span class="name">{{ item.name || "" }}</span>
+                                </a>
+                                <!--                                </router-link>-->
                             </div>
                         </VueSlickCarousel>
                     </template>

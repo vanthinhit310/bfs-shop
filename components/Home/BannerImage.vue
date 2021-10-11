@@ -1,17 +1,17 @@
 <template>
-    <!--    <a-spin :spinning="subLoading">-->
-    <!--        <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />-->
-    <!--        <div class="banner-image">-->
-    <!--            <a class="d-block" href="javascript:void(0);">-->
-    <!--                <img v-if="_.get(settings, 'theme&#45;&#45;home_banner_1')" class="img-fluid" alt="Banner" :src="_.get(settings, 'theme&#45;&#45;home_banner_1')" />-->
-    <!--                <a-empty v-else />-->
-    <!--            </a>-->
-    <!--            <a class="d-block" href="javascript:void(0);">-->
-    <!--                <img v-if="_.get(settings, 'theme&#45;&#45;home_banner_2')" class="img-fluid" alt="Banner" :src="_.get(settings, 'theme&#45;&#45;home_banner_2')" />-->
-    <!--                <a-empty v-else />-->
-    <!--            </a>-->
-    <!--        </div>-->
-    <!--    </a-spin>-->
+    <a-spin :spinning="subLoading">
+        <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
+        <div class="banner-image">
+            <a class="d-block" href="javascript:void(0);">
+                <img v-if="settings.theme_home_banner_1" class="img-fluid" alt="Banner" :src="settings.theme_home_banner_1" />
+                <a-empty v-else />
+            </a>
+            <a class="d-block" href="javascript:void(0);">
+                <img v-if="settings.theme_home_banner_2" class="img-fluid" alt="Banner" :src="settings.theme_home_banner_2" />
+                <a-empty v-else />
+            </a>
+        </div>
+    </a-spin>
 </template>
 
 <script>
