@@ -2,9 +2,9 @@
     <section class="home-wrapper">
         <TopSlide />
         <ProductCategories />
-        <!--        <SellingProducts />-->
-        <!--        <FeaturedProducts />-->
-        <!--        <ProductList />-->
+        <SellingProducts />
+        <FeaturedProducts />
+        <ProductList />
     </section>
 </template>
 

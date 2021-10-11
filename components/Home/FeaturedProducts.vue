@@ -8,23 +8,23 @@
                         <div class="section-header">Sản phẩm nổi bật</div>
                         <VueSlickCarousel v-bind="settings">
                             <div v-for="(item, index) in products" :key="index" class="featured-slide-item">
-                                <router-link class="d-block product-item" :to="{ name: 'product-detail', params: { slug: _.get(item, 'slug') } }">
+                                <router-link class="d-block product-item" :to="{ name: 'product-detail', params: { slug: valueBy(item, 'slug') } }">
                                     <div class="product-item__content">
                                         <div class="product-item__content--image">
-                                            <img alt="Product" class="img-fluid w-100" :src="_.get(item, 'image')" />
-                                            <div class="percent-discount" v-if="_.get(item, 'percentage_off', 0) !== 0">
+                                            <img alt="Product" class="img-fluid w-100" :src="valueBy(item, 'image')" />
+                                            <div class="percent-discount" v-if="valueBy(item, 'percentage_off', 0) !== 0">
                                                 <div class="percent-discount-content">
-                                                    <span class="percent">{{ _.get(item, "percentage_off", 0) }}%</span>
+                                                    <span class="percent">{{ valueBy(item, "percentage_off", 0) }}%</span>
                                                     <span class="text">Giảm</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="product-item__content--name">
-                                            <span>{{ _.get(item, "name") }}</span>
+                                            <span>{{ valueBy(item, "name") }}</span>
                                         </div>
                                         <div class="rate-discount">
                                             <div class="discount-text">
-                                                <div class="discount-text-content" v-show="_.get(item, 'discount_text')">
+                                                <div class="discount-text-content" v-show="valueBy(item, 'discount_text')">
                                                     <svg class="svg_icon" viewBox="-0.5 -0.5 4 16">
                                                         <path
                                                             d="M4 0h-3q-1 0 -1 1a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3q0 1 1 1h3"
@@ -34,7 +34,7 @@
                                                             fill="#f69113"
                                                         ></path>
                                                     </svg>
-                                                    <div class="text">Giảm {{ _.get(item, "discount_text") }}</div>
+                                                    <div class="text">Giảm {{ valueBy(item, "discount_text") }}</div>
                                                     <svg class="svg_icon" viewBox="-0.5 -0.5 4 16">
                                                         <path
                                                             d="M4 0h-3q-1 0 -1 1a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3q0 1 1 1h3"
@@ -47,11 +47,11 @@
                                                 </div>
                                             </div>
                                             <div class="rate">
-                                                <a-rate :defaultValue="_.get(item, 'rate_start', 0)" disabled allow-half />
+                                                <a-rate :defaultValue="valueBy(item, 'rate_start', 0)" disabled allow-half />
                                             </div>
                                         </div>
                                         <div class="product-item__content--price">
-                                            <div class="price">{{ _.get(item, "price_formated") }}</div>
+                                            <div class="price">{{ valueBy(item, "price_formated") }}</div>
                                         </div>
                                     </div>
                                 </router-link>
@@ -123,8 +123,12 @@ export default {
             products: []
         };
     },
-    created() {
-        this.fetchFeaturedProducts();
+    async fetch() {
+        try {
+            await this.fetchFeaturedProducts();
+        } catch (e) {
+            console.log(e.message);
+        }
     },
     methods: {
         ...mapActions("home", ["getFeaturedProducts"]),
@@ -132,7 +136,7 @@ export default {
             try {
                 this.processing = true;
                 const response = await this.getFeaturedProducts();
-                const products = _.get(response, "products", []);
+                const products = _.get(response.data, "products", []);
                 if (products && products.length) {
                     this.products = products;
                 }
@@ -140,6 +144,9 @@ export default {
                 console.log(e.message);
             }
             this.processing = false;
+        },
+        valueBy(o, path, d = "") {
+            return _.get(o, path, d);
         }
     }
 };

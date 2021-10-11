@@ -1,7 +1,7 @@
 <template>
     <section class="product-list">
         <div class="container">
-            <a-spin :spinning="processing">
+            <a-spin :spinning="true">
                 <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
                 <div class="product-list-content">
                     <template v-if="products.length">
@@ -9,23 +9,24 @@
                         <div class="products">
                             <a-row :gutter="[10, 10]">
                                 <a-col v-for="(item, index) in products" :key="index" :xs="{ span: 12 }" :md="{ span: 6 }" :lg="{ span: 4 }">
-                                    <router-link class="d-block product-item" :to="{ name: 'product-detail', params: { slug: _.get(item, 'slug') } }">
+                                    <!--                                    <router-link class="d-block product-item" :to="{ name: 'product-detail', params: { slug: _.get(item, 'slug') } }">-->
+                                    <a class="d-block product-item">
                                         <div class="product-item__content">
                                             <div class="product-item__content--image">
-                                                <img alt="Product" class="img-fluid w-100" :src="_.get(item, 'image')" />
-                                                <div class="percent-discount" v-if="_.get(item, 'percentage_off', 0) !== 0">
+                                                <img alt="Product" class="img-fluid w-100" :src="valueBy(item, 'image')" />
+                                                <div class="percent-discount" v-if="valueBy(item, 'percentage_off', 0) !== 0">
                                                     <div class="percent-discount-content">
-                                                        <span class="percent">{{ _.get(item, "percentage_off", 0) }}%</span>
+                                                        <span class="percent">{{ valueBy(item, "percentage_off", 0) }}%</span>
                                                         <span class="text">Giảm</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="product-item__content--name">
-                                                <span>{{ _.get(item, "name") }}</span>
+                                                <span>{{ valueBy(item, "name") }}</span>
                                             </div>
                                             <div class="rate-discount">
                                                 <div class="discount-text">
-                                                    <div class="discount-text-content" v-show="_.get(item, 'discount_text')">
+                                                    <div class="discount-text-content" v-show="valueBy(item, 'discount_text')">
                                                         <svg class="svg_icon" viewBox="-0.5 -0.5 4 16">
                                                             <path
                                                                 d="M4 0h-3q-1 0 -1 1a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3q0 1 1 1h3"
@@ -35,7 +36,7 @@
                                                                 fill="#f69113"
                                                             ></path>
                                                         </svg>
-                                                        <div class="text">Giảm {{ _.get(item, "discount_text") }}</div>
+                                                        <div class="text">Giảm {{ valueBy(item, "discount_text") }}</div>
                                                         <svg class="svg_icon" viewBox="-0.5 -0.5 4 16">
                                                             <path
                                                                 d="M4 0h-3q-1 0 -1 1a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3q0 1 1 1h3"
@@ -48,14 +49,15 @@
                                                     </div>
                                                 </div>
                                                 <div class="rate">
-                                                    <a-rate :defaultValue="_.get(item, 'rate_start', 0)" disabled allow-half />
+                                                    <a-rate :defaultValue="valueBy(item, 'rate_start', 0)" disabled allow-half />
                                                 </div>
                                             </div>
                                             <div class="product-item__content--price">
-                                                <div class="price">{{ _.get(item, "price_formated") }}</div>
+                                                <div class="price">{{ valueBy(item, "price_formated") }}</div>
                                             </div>
                                         </div>
-                                    </router-link>
+                                    </a>
+                                    <!--                                    </router-link>-->
                                 </a-col>
                             </a-row>
                             <Pagination
@@ -96,9 +98,13 @@ export default {
             total: 0
         };
     },
-    created() {
-        const { currentPage, perPage } = this;
-        this.fetchProducts(currentPage, perPage);
+    async fetch() {
+        try {
+            const { currentPage, perPage } = this;
+            await this.fetchProducts(currentPage, perPage);
+        } catch (e) {
+            console.log(e.message);
+        }
     },
     methods: {
         ...mapActions("home", ["getProducts"]),
@@ -106,8 +112,8 @@ export default {
             try {
                 this.processing = true;
                 const response = await this.getProducts({ page, perPage: pageSize });
-                this.products = _.get(response, "products");
-                const { currentPage, perPage, total } = _.get(response, "pagination");
+                this.products = _.get(response.data, "products");
+                const { currentPage, perPage, total } = _.get(response.data, "pagination");
                 this.currentPage = currentPage;
                 this.perPage = perPage;
                 this.total = total;
@@ -132,6 +138,9 @@ export default {
             } catch (e) {
                 console.log(e.message);
             }
+        },
+        valueBy(o, path, d = "") {
+            return _.get(o, path, d);
         }
     }
 };
