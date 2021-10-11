@@ -4,7 +4,7 @@ const apiEndpoint = process.env.RUNNING_MODE === "production" ? process.env.PROD
 export default {
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
-        title: "Buy First Store",
+        title: "BFS | Trang chủ",
         meta: [
             { charset: "utf-8" },
             { name: "viewport", content: "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=1" },

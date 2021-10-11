@@ -1,7 +1,7 @@
 <template>
     <section class="product-list">
         <div class="container">
-            <a-spin :spinning="true">
+            <a-spin :spinning="processing">
                 <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
                 <div class="product-list-content">
                     <template v-if="products.length">
