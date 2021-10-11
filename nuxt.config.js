@@ -1,3 +1,5 @@
+const apiEndpoint = process.env.RUNNING_MODE === "production" ? process.env.PRODUCTION_API_ENDPOINT : process.env.DEV_API_ENDPOINT;
+
 export default {
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
@@ -20,7 +22,7 @@ export default {
     css: ["@/assets/sass/app.scss", "@/assets/packages/ant.less"],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: ["@/plugins/antd-ui"],
+    plugins: ["@/plugins/antd-ui", "@/plugins/axios"],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: true,
@@ -39,7 +41,21 @@ export default {
     ],
 
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
-    axios: {},
+    axios: {
+        baseURL: apiEndpoint
+    },
+
+    publicRuntimeConfig: {
+        axios: {
+            browserBaseURL: apiEndpoint
+        }
+    },
+
+    privateRuntimeConfig: {
+        axios: {
+            baseURL: apiEndpoint
+        }
+    },
 
     // PWA module configuration: https://go.nuxtjs.dev/pwa
     pwa: {
