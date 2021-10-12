@@ -77,7 +77,6 @@ export default {
     components: {
         VueSlickCarousel
     },
-    name: "RelatedProducts",
     data() {
         return {
             settings: {
@@ -127,6 +126,10 @@ export default {
         ...mapGetters({
             product: "productDetail/getProductItem"
         })
+    },
+    async fetch() {
+        const categories = _.join(_.map(this.product.categories, "id"), ",");
+        await this.fetchRelatedProducts(categories, 15);
     },
     methods: {
         ...mapActions("productDetail", ["getRelatedProducts"]),
