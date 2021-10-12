@@ -79,11 +79,10 @@ export default {
             })
         ]
     },
-    loading: "~/components/Base/MainLoading.vue",
-    // loading: {
-    //     name: "~/components/Base/MainLoading.vue",
-    //     continuous: true
-    // },
+    loading: {
+        color: "white",
+        continuous: true
+    },
     loadingIndicator: {
         name: "circle",
         color: "#3B8070",

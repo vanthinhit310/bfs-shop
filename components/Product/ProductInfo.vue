@@ -1,5 +1,5 @@
 <template>
-    <a-spin :spinning="processing">
+    <a-spin :spinning="false">
         <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
         <div class="info-box">
             <div class="info-box-content">
@@ -112,6 +112,15 @@ export default {
         ...mapGetters({
             product: "productDetail/getProductItem"
         })
+    },
+    mounted() {
+        let attributeUseds = this.product.variations.map(element => {
+            let arr = element.attributes.map(el => {
+                return el.id;
+            });
+            return _.union(arr);
+        });
+        this.usedAttribute = _.uniq(_.flattenDepth(attributeUseds));
     },
     methods: {
         valueBy(o, path, d = "") {
