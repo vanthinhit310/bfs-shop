@@ -71,7 +71,6 @@ export default {
     },
     async fetch() {
         const { slug } = this.$route.params;
-        console.log(slug);
         const response = await this.$store.dispatch("productDetail/getProduct", slug);
         const product = _.get(response.data, "product");
         this.setProductItem(product);

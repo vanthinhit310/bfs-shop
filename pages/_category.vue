@@ -26,7 +26,7 @@
                                 <div class="products">
                                     <a-row :gutter="[10, 10]">
                                         <a-col v-for="(item, index) in products" :key="index" :xs="{ span: 12 }" :md="{ span: 6 }" :lg="{ span: 4 }">
-                                            <router-link class="d-block product-item" :to="{ name: 'product-detail', params: { slug: valueBy(item, 'slug') } }">
+                                            <NuxtLink class="d-block product-item" :to="{ name: 'product-slug', params: { slug: valueBy(item, 'slug') } }">
                                                 <div class="product-item__content">
                                                     <div class="product-item__content--image">
                                                         <img alt="Product" class="img-fluid w-100" :src="valueBy(item, 'image')" />
@@ -72,7 +72,7 @@
                                                         <div class="price">{{ valueBy(item, "price_formated") }}</div>
                                                     </div>
                                                 </div>
-                                            </router-link>
+                                            </NuxtLink>
                                         </a-col>
                                     </a-row>
                                     <Pagination
@@ -130,10 +130,11 @@ export default {
         };
     },
     methods: {
+        ...mapActions("productCategories", ["getCategory"]),
+
         valueBy(o, path, d = "") {
             return _.get(o, path, d);
         },
-        ...mapActions("productCategories", ["getCategory"]),
         async fetchCategory(slug, query = {}) {
             try {
                 this.processing = true;
