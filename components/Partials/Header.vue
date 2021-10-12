@@ -29,9 +29,9 @@
                         <a-col :span="0" :offset="0" :lg="{ span: 3 }">
                             <div class="main-logo">
                                 <transition name="fade" mode="out-in">
-                                    <router-link v-if="settings.theme_logo" class="d-block" :to="{ name: 'home' }">
+                                    <NuxtLink v-if="settings.theme_logo" class="d-block" :to="{ name: 'index' }">
                                         <img alt="Logo" class="img-fluid" :src="settings.theme_logo" />
-                                    </router-link>
+                                    </NuxtLink>
                                 </transition>
                             </div>
                         </a-col>

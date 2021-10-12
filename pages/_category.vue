@@ -1,0 +1,179 @@
+<template>
+    <div class="product-category-wrapper">
+        <div class="container">
+            <div class="pc-content">
+                <div class="pc-content-header">
+                    <div class="left">
+                        <a-space>
+                            Sắp xếp theo
+                            <a-select v-model="priceSort" style="width: 130px">
+                                <a-select-option value="">Mặc định</a-select-option>
+                                <a-select-option value="price_asc">Giá thấp đến cao</a-select-option>
+                                <a-select-option value="price_desc">Giá cao đến thấp</a-select-option>
+                                <a-select-option value="date_desc">Mới nhất</a-select-option>
+                                <a-select-option value="date_asc">Cũ nhất</a-select-option>
+                                <a-select-option value="name_asc">Tên: A-Z</a-select-option>
+                                <a-select-option value="name_desc">Tên: Z-A</a-select-option>
+                            </a-select>
+                        </a-space>
+                    </div>
+                </div>
+                <div class="pc-content-list">
+                    <a-spin :spinning="processing">
+                        <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
+                        <div class="product-list-content">
+                            <template v-if="products.length">
+                                <div class="products">
+                                    <a-row :gutter="[10, 10]">
+                                        <a-col v-for="(item, index) in products" :key="index" :xs="{ span: 12 }" :md="{ span: 6 }" :lg="{ span: 4 }">
+                                            <router-link class="d-block product-item" :to="{ name: 'product-detail', params: { slug: valueBy(item, 'slug') } }">
+                                                <div class="product-item__content">
+                                                    <div class="product-item__content--image">
+                                                        <img alt="Product" class="img-fluid w-100" :src="valueBy(item, 'image')" />
+                                                        <div class="percent-discount" v-if="valueBy(item, 'percentage_off', 0) !== 0">
+                                                            <div class="percent-discount-content">
+                                                                <span class="percent">{{ valueBy(item, "percentage_off", 0) }}%</span>
+                                                                <span class="text">Giảm</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-item__content--name">
+                                                        <span>{{ valueBy(item, "name") }}</span>
+                                                    </div>
+                                                    <div class="rate-discount">
+                                                        <div class="discount-text">
+                                                            <div class="discount-text-content" v-show="valueBy(item, 'discount_text')">
+                                                                <svg class="svg_icon" viewBox="-0.5 -0.5 4 16">
+                                                                    <path
+                                                                        d="M4 0h-3q-1 0 -1 1a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3q0 1 1 1h3"
+                                                                        stroke-width="1"
+                                                                        transform=""
+                                                                        stroke="currentColor"
+                                                                        fill="#f69113"
+                                                                    ></path>
+                                                                </svg>
+                                                                <div class="text">Giảm {{ valueBy(item, "discount_text") }}</div>
+                                                                <svg class="svg_icon" viewBox="-0.5 -0.5 4 16">
+                                                                    <path
+                                                                        d="M4 0h-3q-1 0 -1 1a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3q0 1 1 1h3"
+                                                                        stroke-width="1"
+                                                                        transform="rotate(180) translate(-3 -15)"
+                                                                        stroke="currentColor"
+                                                                        fill="#f69113"
+                                                                    ></path>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                        <div class="rate">
+                                                            <a-rate :defaultValue="valueBy(item, 'rate_start', 0)" disabled allow-half />
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-item__content--price">
+                                                        <div class="price">{{ valueBy(item, "price_formated") }}</div>
+                                                    </div>
+                                                </div>
+                                            </router-link>
+                                        </a-col>
+                                    </a-row>
+                                    <Pagination
+                                        @onSizeChange="handleSizeChange"
+                                        @onPageChange="handlePageChange"
+                                        :size-options="pageSizeOptions"
+                                        :current-page="query.page"
+                                        :page-size="query.num"
+                                        :total="total"
+                                    />
+                                </div>
+                            </template>
+                            <template v-else>
+                                <a-empty style="min-height: 400px; display: flex; justify-content: center; align-items: center"></a-empty>
+                            </template>
+                        </div>
+                    </a-spin>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import { mapActions } from "vuex";
+import Pagination from "~/components/Base/Pagination";
+
+export default {
+    components: {
+        Pagination
+    },
+    data() {
+        return {
+            processing: false,
+            pageSizeOptions: ["18", "36"],
+            products: [],
+            category: "",
+            priceSort: "",
+            total: 0,
+            query: {
+                page: 1,
+                num: 18,
+                sortBy: ""
+            }
+        };
+    },
+    async asyncData({ store, params }) {
+        // When calling /abc the slug will be "abc"
+        // console.log({ params, store });
+        const category = params.category;
+        const response = await store.dispatch("productCategories/getCategory", { slug: category, query: {} });
+        return {
+            products: _.get(response.data, "products"),
+            category: _.get(response.data, "category", []),
+            currentPage: _.get(response.data, "pagination.currentPage", 1),
+            total: _.get(response.data, "pagination.total", 0)
+        };
+    },
+    methods: {
+        valueBy(o, path, d = "") {
+            return _.get(o, path, d);
+        },
+        ...mapActions("productCategories", ["getCategory"]),
+        async fetchCategory(slug, query = {}) {
+            try {
+                this.processing = true;
+                const response = await this.getCategory({ slug, query });
+                this.products = _.get(response.data, "products", []);
+                this.category = _.get(response.data, "category");
+                this.currentPage = _.get(response.data, "pagination.currentPage", 1);
+                this.total = _.get(response.data, "pagination.total", 0);
+            } catch (e) {
+                console.log(e.message);
+            }
+            this.processing = false;
+        },
+        async handleSizeChange(current, pageSize) {
+            try {
+                this.query.page = current;
+                this.query.num = pageSize;
+                await this.fetchCategory(this.category.slug, this.query);
+            } catch (e) {
+                console.log(e.message);
+            }
+        },
+        async handlePageChange(page) {
+            try {
+                this.query.page = page;
+                await this.fetchCategory(this.category.slug, this.query);
+            } catch (e) {
+                console.log(e.message);
+            }
+        }
+    },
+    watch: {
+        priceSort: function (after, before) {
+            this.query.sortBy = after;
+            this.fetchCategory(this.category.slug, this.query);
+        }
+    }
+};
+</script>
+
+<style scoped></style>

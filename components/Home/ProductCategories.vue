@@ -8,14 +8,12 @@
                         <div class="section-header">Danh mục</div>
                         <VueSlickCarousel v-bind="settings">
                             <div v-for="(item, index) in categories" :key="index" class="category-item">
-                                <!--                                <router-link :to="{ name: 'product-category', params: { slug: _.get(item, 'slug') } }">-->
-                                <a href="">
+                                <NuxtLink :to="{ name: 'category', params: { category: item.slug } }">
                                     <span class="image">
                                         <img alt="Category" class="img-fluid" :src="item.image || ''" />
                                     </span>
                                     <span class="name">{{ item.name || "" }}</span>
-                                </a>
-                                <!--                                </router-link>-->
+                                </NuxtLink>
                             </div>
                         </VueSlickCarousel>
                     </template>

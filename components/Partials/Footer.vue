@@ -10,9 +10,9 @@
                             <div class="footer-categories-list">
                                 <a-row :gutter="16">
                                     <a-col v-for="(item, index) in categories" :key="index" :span="12" :lg="{ span: 6 }" :md="{ span: 8 }">
-                                        <!--                                        <router-link class="d-flex" :to="{ name: 'product-category', params: { slug: _.get(item, 'slug') } }">-->
-                                        <a class="d-flex">{{ item.name || "" }}</a>
-                                        <!--                                        </router-link>-->
+                                        <NuxtLink class="d-flex" :to="{ name: 'category', params: { category: item.slug } }">
+                                            {{ item.name || "" }}
+                                        </NuxtLink>
                                     </a-col>
                                 </a-row>
                             </div>

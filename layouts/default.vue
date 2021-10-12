@@ -1,6 +1,5 @@
 <template>
     <section class="main-wrapper">
-        <loading :active.sync="isLoading" loader="dots" :opacity="1" :width="40" :height="40" :z-index="100" color="#ee4d2d" :is-full-page="true"></loading>
         <a-layout :style="{ background: '#fff' }">
             <a-layout-header :style="{ position: 'fixed', zIndex: 15, width: '100%' }">
                 <Header />
@@ -20,13 +19,10 @@
 import Header from "@/components/Partials/Header";
 import Footer from "@/components/Partials/Footer";
 import { mapActions, mapGetters, mapMutations } from "vuex";
-import Loading from "vue-loading-overlay";
-import "vue-loading-overlay/dist/vue-loading.css";
 export default {
     components: {
         Header,
-        Footer,
-        Loading
+        Footer
     },
     async fetch() {
         try {

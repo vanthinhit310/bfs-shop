@@ -79,8 +79,6 @@ export default {
             })
         ]
     },
-    loading: {
-        color: "#ee4d2d"
-    },
+    loading: "~/components/Base/MainLoading.vue",
     pageTransition: "page"
 };
