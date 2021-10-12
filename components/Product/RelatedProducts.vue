@@ -1,5 +1,5 @@
 <template>
-    <section class="featured-products">
+    <section class="featured-products related-product">
         <div class="container">
             <a-spin :spinning="processing">
                 <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
@@ -8,7 +8,7 @@
                         <div class="section-header">Sản phẩm nổi bật</div>
                         <VueSlickCarousel v-bind="settings">
                             <div v-for="(item, index) in products" :key="index" class="featured-slide-item">
-                                <NuxtLink class="d-block product-item" :to="{ name: 'product-slug', params: { slug: valueBy(item, 'slug') } }">
+                                <router-link class="d-block product-item" :to="{ name: 'product-detail', params: { slug: valueBy(item, 'slug') } }">
                                     <div class="product-item__content">
                                         <div class="product-item__content--image">
                                             <img alt="Product" class="img-fluid w-100" :src="valueBy(item, 'image')" />
@@ -54,7 +54,7 @@
                                             <div class="price">{{ valueBy(item, "price_formated") }}</div>
                                         </div>
                                     </div>
-                                </NuxtLink>
+                                </router-link>
                             </div>
                         </VueSlickCarousel>
                     </template>
@@ -77,7 +77,10 @@ export default {
     components: {
         VueSlickCarousel
     },
-    name: "FeaturedProducts",
+    props: {
+        productDetail: String | Object
+    },
+    name: "RelatedProducts",
     data() {
         return {
             settings: {
@@ -119,23 +122,16 @@ export default {
                     }
                 ]
             },
-            processing: false,
+            processing: true,
             products: []
         };
     },
-    async fetch() {
-        try {
-            await this.fetchFeaturedProducts();
-        } catch (e) {
-            console.log(e.message);
-        }
-    },
     methods: {
-        ...mapActions("home", ["getFeaturedProducts"]),
-        async fetchFeaturedProducts() {
+        ...mapActions("productDetail", ["getRelatedProducts"]),
+        async fetchRelatedProducts(categories, pageSize) {
             try {
                 this.processing = true;
-                const response = await this.getFeaturedProducts();
+                const response = await this.getRelatedProducts(categories, pageSize);
                 const products = _.get(response.data, "products", []);
                 if (products && products.length) {
                     this.products = products;
@@ -147,6 +143,12 @@ export default {
         },
         valueBy(o, path, d = "") {
             return _.get(o, path, d);
+        }
+    },
+    watch: {
+        productDetail() {
+            const categories = _.join(_.map(this.productDetail.categories, "id"), ",");
+            this.fetchRelatedProducts(categories, 15);
         }
     }
 };

@@ -8,8 +8,7 @@
                         <div class="section-header">Sản phẩm bán chạy</div>
                         <VueSlickCarousel v-bind="settings">
                             <div v-for="(item, index) in products" :key="index" class="featured-slide-item">
-                                <!--                                <router-link class="d-block product-item" :to="{ name: 'product-detail', params: { slug: _.get(item, 'slug') } }">-->
-                                <a class="d-block product-item">
+                                <NuxtLink class="d-block product-item" :to="{ name: 'product-slug', params: { slug: valueBy(item, 'slug') } }">
                                     <div class="product-item__content">
                                         <div class="product-item__content--image">
                                             <img alt="Product" class="img-fluid w-100" :src="valueBy(item, 'image')" />
@@ -55,8 +54,7 @@
                                             <div class="price">{{ valueBy(item, "price_formated") }}</div>
                                         </div>
                                     </div>
-                                </a>
-                                <!--                                </router-link>-->
+                                </NuxtLink>
                             </div>
                         </VueSlickCarousel>
                     </template>
