@@ -120,8 +120,6 @@ export default {
         };
     },
     async asyncData({ store, params }) {
-        // When calling /abc the slug will be "abc"
-        // console.log({ params, store });
         const category = params.category;
         const response = await store.dispatch("productCategories/getCategory", { slug: category, query: {} });
         return {
