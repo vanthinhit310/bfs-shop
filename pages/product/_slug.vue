@@ -4,9 +4,9 @@
             <div class="container">
                 <template v-if="product">
                     <a-breadcrumb>
-                        <a-breadcrumb-item><router-link :to="{ name: 'home' }">Home</router-link></a-breadcrumb-item>
+                        <a-breadcrumb-item><NuxtLink :to="{ name: 'index' }">Home</NuxtLink></a-breadcrumb-item>
                         <a-breadcrumb-item>
-                            <a href="">{{ valueBy(product, "categories[0].name") }}</a>
+                            <NuxtLink :to="{ name: 'category', params: { category: valueBy(product, 'categories[0].slug') } }">{{ valueBy(product, "categories[0].name") }}</NuxtLink>
                         </a-breadcrumb-item>
                         <a-breadcrumb-item>{{ valueBy(product, "name") }}</a-breadcrumb-item>
                     </a-breadcrumb>
@@ -22,10 +22,10 @@
                 <div class="info-content card">
                     <a-row class="pic">
                         <a-col class="overflow-hidden pic-left">
-                            <ProductImage :variation="variation" :product-detail="product" />
+                            <ProductImage :variation="variation" />
                         </a-col>
                         <a-col class="overflow-hidden pic-right">
-                            <ProductInfo @attributeChange="handleAttributeChange" :product-detail="product" />
+                            <ProductInfo @attributeChange="handleAttributeChange" />
                         </a-col>
                     </a-row>
                 </div>
@@ -36,7 +36,7 @@
             <div class="container">
                 <div class="description-box-content">
                     <div class="description-box-left">
-                        <ProductDescription :product-detail="product" />
+                        <ProductDescription />
                     </div>
                     <div class="description-box-right">
                         <SellingProducts />
@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-        <RelatedProducts :product-detail="product" />
+        <RelatedProducts />
     </section>
 </template>
 
@@ -74,9 +74,7 @@ export default {
         console.log(slug);
         const response = await this.$store.dispatch("productDetail/getProduct", slug);
         const product = _.get(response.data, "product");
-        if (!!product) {
-            this.setProductItem(product);
-        }
+        this.setProductItem(product);
     },
     computed: {
         ...mapGetters({

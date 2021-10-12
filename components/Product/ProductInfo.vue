@@ -39,9 +39,9 @@
                         <label class="label">{{ valueBy(attributeSet, "title") }}</label>
                         <div class="content">
                             <div v-for="(attribute, index) in valueBy(attributeSet, 'attributes')" :key="`${i}_${index}`" class="custom-radio">
-                                <input v-if="_.includes(usedAttribute, attribute.id)" :value="attribute.id" type="radio" :name="attributeSet.slug" :id="`${attributeSet.slug}_${index}`" />
+                                <input v-if="checkInclude(usedAttribute, attribute.id)" :value="attribute.id" type="radio" :name="attributeSet.slug" :id="`${attributeSet.slug}_${index}`" />
                                 <label
-                                    v-if="_.includes(usedAttribute, attribute.id)"
+                                    v-if="checkInclude(usedAttribute, attribute.id)"
                                     @click="addAttribute(attributeSet.slug, attribute.id)"
                                     :for="`${attributeSet.slug}_${index}`"
                                     class="product-variation"
@@ -90,14 +90,12 @@
 
 <script>
 import VueNumericInput from "vue-numeric-input";
+import { mapGetters } from "vuex";
 
 export default {
     name: "ProductInfo",
     components: {
         VueNumericInput
-    },
-    props: {
-        productDetail: String | Object
     },
     data() {
         return {
@@ -105,15 +103,22 @@ export default {
             quantity: 1,
             min: 1,
             max: 10,
-            product: "",
             usedAttribute: [],
             attributes: {},
             arrayAttrs: []
         };
     },
+    computed: {
+        ...mapGetters({
+            product: "productDetail/getProductItem"
+        })
+    },
     methods: {
         valueBy(o, path, d = "") {
             return _.get(o, path, d);
+        },
+        checkInclude(arr, id) {
+            return _.includes(arr, id);
         },
         increment() {
             if (this.quantity === this.max) {
@@ -137,16 +142,14 @@ export default {
         }
     },
     watch: {
-        productDetail() {
-            let attributeUseds = this.productDetail.variations.map(element => {
+        product() {
+            let attributeUseds = this.product.variations.map(element => {
                 let arr = element.attributes.map(el => {
                     return el.id;
                 });
                 return _.union(arr);
             });
             this.usedAttribute = _.uniq(_.flattenDepth(attributeUseds));
-
-            this.product = this.productDetail;
             this.processing = false;
         }
     }

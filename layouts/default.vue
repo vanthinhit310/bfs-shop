@@ -5,7 +5,7 @@
                 <Header />
             </a-layout-header>
             <a-layout-content :style="{ marginTop: '108.16px' }">
-                <Nuxt keep-alive />
+                <Nuxt />
             </a-layout-content>
             <a-layout-footer>
                 <Footer />

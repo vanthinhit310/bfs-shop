@@ -8,7 +8,7 @@
                         <div class="selling-product-title">Top sản phẩm bán chạy</div>
                         <div class="selling-product-list">
                             <div v-for="(item, index) in products" :key="index" class="selling-product-item">
-                                <router-link class="d-block product-item" :to="{ name: 'product-detail', params: { slug: valueBy(item, 'slug') } }">
+                                <NuxtLink class="d-block product-item" :to="{ name: 'product-slug', params: { slug: valueBy(item, 'slug') } }">
                                     <div class="product-item__content">
                                         <div class="product-item__content--image">
                                             <img alt="Product" class="img-fluid w-100" :src="valueBy(item, 'image')" />
@@ -20,7 +20,7 @@
                                             <div class="price">{{ valueBy(item, "price_formated") }}</div>
                                         </div>
                                     </div>
-                                </router-link>
+                                </NuxtLink>
                             </div>
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                     <div class="section-header">Sản phẩm bán chạy</div>
                     <VueSlickCarousel v-bind="settings">
                         <div v-for="(item, index) in products" :key="index" class="featured-slide-item">
-                            <router-link class="d-block product-item" :to="{ name: 'product-detail', params: { slug: valueBy(item, 'slug') } }">
+                            <NuxtLink class="d-block product-item" :to="{ name: 'product-slug', params: { slug: valueBy(item, 'slug') } }">
                                 <div class="product-item__content">
                                     <div class="product-item__content--image">
                                         <img alt="Product" class="img-fluid w-100" :src="valueBy(item, 'image')" />
@@ -81,7 +81,7 @@
                                         <div class="price">{{ valueBy(item, "price_formated") }}</div>
                                     </div>
                                 </div>
-                            </router-link>
+                            </NuxtLink>
                         </div>
                     </VueSlickCarousel>
                 </template>
@@ -149,8 +149,8 @@ export default {
             products: []
         };
     },
-    created() {
-        this.fetchSellingProducts();
+    async fetch() {
+        await this.fetchSellingProducts();
     },
     methods: {
         ...mapActions("home", ["getSellingProducts"]),

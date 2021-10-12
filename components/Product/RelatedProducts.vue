@@ -8,7 +8,7 @@
                         <div class="section-header">Sản phẩm nổi bật</div>
                         <VueSlickCarousel v-bind="settings">
                             <div v-for="(item, index) in products" :key="index" class="featured-slide-item">
-                                <router-link class="d-block product-item" :to="{ name: 'product-detail', params: { slug: valueBy(item, 'slug') } }">
+                                <NuxtLink class="d-block product-item" :to="{ name: 'product-slug', params: { slug: valueBy(item, 'slug') } }">
                                     <div class="product-item__content">
                                         <div class="product-item__content--image">
                                             <img alt="Product" class="img-fluid w-100" :src="valueBy(item, 'image')" />
@@ -54,7 +54,7 @@
                                             <div class="price">{{ valueBy(item, "price_formated") }}</div>
                                         </div>
                                     </div>
-                                </router-link>
+                                </NuxtLink>
                             </div>
                         </VueSlickCarousel>
                     </template>
@@ -71,14 +71,11 @@
 import VueSlickCarousel from "vue-slick-carousel";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
     components: {
         VueSlickCarousel
-    },
-    props: {
-        productDetail: String | Object
     },
     name: "RelatedProducts",
     data() {
@@ -126,6 +123,11 @@ export default {
             products: []
         };
     },
+    computed: {
+        ...mapGetters({
+            product: "productDetail/getProductItem"
+        })
+    },
     methods: {
         ...mapActions("productDetail", ["getRelatedProducts"]),
         async fetchRelatedProducts(categories, pageSize) {
@@ -146,8 +148,8 @@ export default {
         }
     },
     watch: {
-        productDetail() {
-            const categories = _.join(_.map(this.productDetail.categories, "id"), ",");
+        product() {
+            const categories = _.join(_.map(this.product.categories, "id"), ",");
             this.fetchRelatedProducts(categories, 15);
         }
     }

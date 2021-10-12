@@ -66,7 +66,6 @@ export default {
         CoolLightBox
     },
     props: {
-        productDetail: String | Object,
         variation: String | Object
     },
     data() {
@@ -90,12 +89,6 @@ export default {
             product: "productDetail/getProductItem"
         })
     },
-    mounted() {
-        this.activeImage = _.get(this.product, "thumbnail");
-        this.images = _.get(this.product, "images");
-        this.big_images = _.get(this.product, "big_images");
-        this.processing = false;
-    },
     methods: {
         setActiveImage(src, el) {
             this.activeImage = src;
@@ -107,17 +100,23 @@ export default {
         valueBy(o, path, d = "") {
             return _.get(o, path, d);
         }
+    },
+    watch: {
+        product(after) {
+            this.activeImage = _.get(after, "thumbnail");
+            this.images = _.get(after, "images");
+            this.big_images = _.get(after, "big_images");
+            this.processing = false;
+        },
+        variation() {
+            if (!!this.variation) {
+                this.images = _.get(this.variation, "image_with_sizes.product-thumb");
+                this.big_images = _.get(this.variation, "image_with_sizes.origin");
+                this.activeImage = _.get(this.variation, "image_with_sizes.origin[0]");
+                this.activeEl = 0;
+            }
+        }
     }
-    // watch: {
-    //     // variation() {
-    //     //     if (!!this.variation) {
-    //     //         this.images = _.get(this.variation, "image_with_sizes.product-thumb");
-    //     //         this.big_images = _.get(this.variation, "image_with_sizes.origin");
-    //     //         this.activeImage = _.get(this.variation, "image_with_sizes.origin[0]");
-    //     //         this.activeEl = 0;
-    //     //     }
-    //     // }
-    // }
 };
 </script>
 
