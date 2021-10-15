@@ -4,7 +4,7 @@
             <div class="container">
                 <a-row type="flex" justify="center">
                     <a-col class="gutter-row" :lg="{ span: 16 }" :span="24">
-                        <Slides />
+                        <Slides :items="slides" />
                     </a-col>
                     <a-col class="gutter-row" :lg="{ span: 8 }" :span="24">
                         <BannerImage />
@@ -35,6 +35,18 @@ export default {
         FeaturedProducts,
         SellingProducts,
         ProductList
+    },
+    data() {
+        return {
+            slides: []
+        };
+    },
+    async asyncData({ store }) {
+        const slides = await store.dispatch("home/getHomeSlides");
+
+        return {
+            slides: _.get(slides.data, "slides", [])
+        };
     }
 };
 </script>

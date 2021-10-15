@@ -1,10 +1,10 @@
 <template>
     <div class="home-slide-content">
-        <a-spin :spinning="$fetchState.pending">
+        <a-spin :spinning="false">
             <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
-            <template v-if="slides.length">
+            <template v-if="items.length">
                 <VueSlickCarousel :autoplaySpeed="6000" :speed="800" :autoplay="true" :touchMove="false" :draggable="false" :arrows="true" :dots="true">
-                    <div v-for="(item, index) in slides" :key="index" class="slide-item">
+                    <div v-for="(item, index) in items" :key="index" class="slide-item">
                         <a class="d-block" :href="item.link || 'javascript:void(0);'">
                             <img class="img-fluid w-100 d-block" alt="Slide" :src="item.image || ''" />
                         </a>
@@ -28,25 +28,17 @@ export default {
     components: {
         VueSlickCarousel
     },
+    props: {
+        items: {
+            type: Array | Object,
+            default: []
+        }
+    },
     data() {
         return {
             slides: [],
             error: ""
         };
-    },
-    async fetch() {
-        try {
-            const response = await this.getHomeSlides();
-            const slides = _.get(response.data, "slides", []);
-            if (!!slides) {
-                this.slides = slides;
-            }
-        } catch (e) {
-            console.log(e.message);
-        }
-    },
-    methods: {
-        ...mapActions("home", ["getHomeSlides"])
     }
 };
 </script>
