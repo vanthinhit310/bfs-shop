@@ -14,7 +14,7 @@
         </div>
         <ProductCategories />
         <SellingProducts />
-        <FeaturedProducts />
+        <FeaturedProducts :items="featureds" />
         <ProductList />
     </section>
 </template>
@@ -38,14 +38,17 @@ export default {
     },
     data() {
         return {
-            slides: []
+            slides: [],
+            featureds: []
         };
     },
     async asyncData({ store }) {
         const slides = await store.dispatch("home/getHomeSlides");
+        const featureds = await store.dispatch("home/getFeaturedProducts");
 
         return {
-            slides: _.get(slides.data, "slides", [])
+            slides: _.get(slides.data, "slides", []),
+            featureds: _.get(featureds.data, "products", [])
         };
     }
 };
