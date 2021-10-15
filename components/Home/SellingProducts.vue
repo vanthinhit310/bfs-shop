@@ -1,7 +1,7 @@
 <template>
     <section class="featured-products">
         <div class="container">
-            <a-spin :spinning="processing">
+            <a-spin :spinning="$fetchState.pending">
                 <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
                 <div class="featured-products-content">
                     <template v-if="products.length">
@@ -75,36 +75,22 @@ export default {
                     }
                 ]
             },
-            processing: false,
             products: []
         };
     },
     async fetch() {
         try {
-            await this.fetchSellingProducts();
+            const response = await this.getSellingProducts();
+            const products = _.get(response.data, "products", []);
+            if (products && products.length) {
+                this.products = products;
+            }
         } catch (e) {
             console.log(e.message);
         }
     },
     methods: {
-        ...mapActions("home", ["getSellingProducts"]),
-        async fetchSellingProducts() {
-            try {
-                this.processing = true;
-                const response = await this.getSellingProducts();
-                const products = _.get(response.data, "products", []);
-                if (products && products.length) {
-                    this.products = products;
-                }
-            } catch (e) {
-                console.log(e.message);
-            }
-            this.processing = false;
-        },
-
-        valueBy(o, path, d = "") {
-            return _.get(o, path, d);
-        }
+        ...mapActions("home", ["getSellingProducts"])
     }
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
     <section class="product-list">
         <div class="container">
-            <a-spin :spinning="$fetchState.pending || processing">
+            <a-spin :spinning="$fetchState.pending">
                 <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
                 <div class="product-list-content">
                     <template v-if="products.length">
@@ -53,47 +53,28 @@ export default {
     },
     async fetch() {
         try {
-            const { currentPage, perPage } = this;
-            await this.fetchProducts(currentPage, perPage);
+            const page = this.currentPage;
+            const size = this.perPage;
+            const response = await this.getProducts({ page: page, perPage: size });
+            this.products = _.get(response.data, "products");
+            const { currentPage, perPage, total } = _.get(response.data, "pagination");
+            this.currentPage = currentPage;
+            this.perPage = perPage;
+            this.total = total;
         } catch (e) {
             console.log(e.message);
         }
     },
     methods: {
         ...mapActions("home", ["getProducts"]),
-        async fetchProducts(page, pageSize) {
-            try {
-                this.processing = true;
-                const response = await this.getProducts({ page, perPage: pageSize });
-                this.products = _.get(response.data, "products");
-                const { currentPage, perPage, total } = _.get(response.data, "pagination");
-                this.currentPage = currentPage;
-                this.perPage = perPage;
-                this.total = total;
-            } catch (e) {
-                console.log(e.message);
-            }
-            this.processing = false;
+        handleSizeChange(page, pageSize) {
+            this.currentPage = page;
+            this.perPage = pageSize;
+            this.$fetch();
         },
-        async handleSizeChange(current, pageSize) {
-            try {
-                await this.fetchProducts(current, pageSize);
-                this.currentPage = current;
-                this.perPage = pageSize;
-            } catch (e) {
-                console.log(e.message);
-            }
-        },
-        async handlePageChange(page) {
-            try {
-                const { perPage } = this;
-                await this.fetchProducts(page, perPage);
-            } catch (e) {
-                console.log(e.message);
-            }
-        },
-        valueBy(o, path, d = "") {
-            return _.get(o, path, d);
+        handlePageChange(page) {
+            this.currentPage = page;
+            this.$fetch();
         }
     }
 };
