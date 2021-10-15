@@ -117,11 +117,6 @@ export default {
         }
     },
     watch: {
-        // product(after) {
-        //     this.activeImage = _.get(after, "thumbnail");
-        //     this.images = _.get(after, "images");
-        //     this.big_images = _.get(after, "big_images");
-        // },
         variation() {
             if (!!this.variation) {
                 this.images = _.get(this.variation, "image_with_sizes.product-thumb");
