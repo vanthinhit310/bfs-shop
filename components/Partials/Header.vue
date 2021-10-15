@@ -45,8 +45,7 @@
 
                                 <a-list v-show="active" class="search-list" bordered :data-source="products">
                                     <a-list-item @click="hideList()" :key="index" slot="renderItem" slot-scope="item, index">
-                                        <!--                                        <router-link class="d-flex search-item" :to="{ name: 'product-detail', params: { slug: _.get(item, 'slug') } }">-->
-                                        <a class="d-flex search-item">
+                                        <NuxtLink class="d-flex search-item" :to="{ name: 'product-slug', params: { slug: valueBy(item, 'slug') } }">
                                             <span class="left">
                                                 <span class="search-item-avatar">
                                                     <img class="img-fluid" :src="item.image || ''" alt="Product" />
@@ -56,8 +55,7 @@
                                                 <span class="search-title">{{ item.name || "" }}</span>
                                                 <span class="search-price">{{ item.price_formated || "" }}</span>
                                             </span>
-                                        </a>
-                                        <!--                                        </router-link>-->
+                                        </NuxtLink>
                                     </a-list-item>
                                 </a-list>
                             </div>
@@ -126,6 +124,9 @@ export default {
         },
         showList() {
             this.active = true;
+        },
+        valueBy(o, path, d = "") {
+            return _.get(o, path, d);
         }
     },
     watch: {
