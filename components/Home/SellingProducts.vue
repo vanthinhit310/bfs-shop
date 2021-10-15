@@ -33,7 +33,6 @@ export default {
         VueSlickCarousel,
         ProductItem
     },
-    name: "SellingProducts",
     data() {
         return {
             settings: {

@@ -1,13 +1,13 @@
 <template>
     <section class="featured-products">
         <div class="container">
-            <a-spin :spinning="false">
+            <a-spin :spinning="$fetchState.pending">
                 <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
                 <div class="featured-products-content">
-                    <template v-if="items.length">
+                    <template v-if="products.length">
                         <div class="section-header">Sản phẩm nổi bật</div>
                         <VueSlickCarousel v-bind="settings">
-                            <div v-for="(item, index) in items" :key="index" class="featured-slide-item">
+                            <div v-for="(item, index) in products" :key="index" class="featured-slide-item">
                                 <ProductItem :item="item" :key="index" />
                             </div>
                         </VueSlickCarousel>
@@ -29,12 +29,6 @@ import { mapActions } from "vuex";
 import ProductItem from "~/components/Sub/ProductItem";
 
 export default {
-    props: {
-        items: {
-            type: Array | Object,
-            default: []
-        }
-    },
     components: {
         VueSlickCarousel,
         ProductItem
@@ -80,8 +74,23 @@ export default {
                         }
                     }
                 ]
-            }
+            },
+            products: []
         };
+    },
+    async fetch() {
+        try {
+            const response = await this.getFeaturedProducts();
+            const products = _.get(response.data, "products", []);
+            if (products && products.length) {
+                this.products = products;
+            }
+        } catch (e) {
+            console.log(e.message);
+        }
+    },
+    methods: {
+        ...mapActions("home", ["getFeaturedProducts"])
     }
 };
 </script>

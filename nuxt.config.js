@@ -81,7 +81,7 @@ export default {
     },
     loading: {
         color: "white",
-        continuous: true
+        continuous: false
     },
     loadingIndicator: {
         name: "circle",
