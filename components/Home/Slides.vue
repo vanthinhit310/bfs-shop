@@ -1,6 +1,6 @@
 <template>
     <div class="home-slide-content">
-        <a-spin :spinning="processing">
+        <a-spin :spinning="$fetchState.pending">
             <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
             <template v-if="slides.length">
                 <VueSlickCarousel :autoplaySpeed="6000" :speed="800" :autoplay="true" :touchMove="false" :draggable="false" :arrows="true" :dots="true">
@@ -30,14 +30,12 @@ export default {
     },
     data() {
         return {
-            processing: false,
             slides: [],
             error: ""
         };
     },
     async fetch() {
         try {
-            this.processing = true;
             const response = await this.getHomeSlides();
             const slides = _.get(response.data, "slides", []);
             if (!!slides) {
@@ -46,7 +44,6 @@ export default {
         } catch (e) {
             console.log(e.message);
         }
-        this.processing = false;
     },
     methods: {
         ...mapActions("home", ["getHomeSlides"])

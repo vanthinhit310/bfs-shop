@@ -131,7 +131,6 @@ export default {
     },
     methods: {
         ...mapActions("productCategories", ["getCategory"]),
-
         valueBy(o, path, d = "") {
             return _.get(o, path, d);
         },

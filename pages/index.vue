@@ -1,6 +1,17 @@
 <template>
     <section class="home-wrapper">
-        <TopSlide />
+        <div class="home-slide">
+            <div class="container">
+                <a-row type="flex" justify="center">
+                    <a-col class="gutter-row" :lg="{ span: 16 }" :span="24">
+                        <Slides />
+                    </a-col>
+                    <a-col class="gutter-row" :lg="{ span: 8 }" :span="24">
+                        <BannerImage />
+                    </a-col>
+                </a-row>
+            </div>
+        </div>
         <ProductCategories />
         <SellingProducts />
         <FeaturedProducts />
@@ -9,14 +20,17 @@
 </template>
 
 <script>
-import TopSlide from "~/components/Home/TopSlide";
 import ProductCategories from "~/components/Home/ProductCategories";
 import SellingProducts from "~/components/Home/SellingProducts";
 import FeaturedProducts from "~/components/Home/FeaturedProducts";
 import ProductList from "~/components/Home/ProductList";
+import Slides from "~/components/Home/Slides";
+import BannerImage from "~/components/Home/BannerImage";
+
 export default {
     components: {
-        TopSlide,
+        Slides,
+        BannerImage,
         ProductCategories,
         FeaturedProducts,
         SellingProducts,
