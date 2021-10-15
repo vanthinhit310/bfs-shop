@@ -107,7 +107,7 @@ export default {
         return {
             settings: {
                 dots: false,
-                focusOnSelect: true,
+                focusOnSelect: false,
                 infinite: false,
                 speed: 800,
                 slidesToShow: 6,
