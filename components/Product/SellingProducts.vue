@@ -100,7 +100,6 @@ import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 import { mapActions } from "vuex";
 
 export default {
-    name: "SellingProducts",
     components: {
         VueSlickCarousel
     },

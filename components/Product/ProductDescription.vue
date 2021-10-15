@@ -1,5 +1,5 @@
 <template>
-    <a-spin :spinning="processing">
+    <a-spin :spinning="false">
         <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
         <div class="description-detail">
             <div v-if="valueBy(product, 'specifications')" class="box-title-content">
@@ -18,16 +18,11 @@
 import { mapGetters } from "vuex";
 
 export default {
-    name: "ProductDescription",
-    data() {
-        return {
-            processing: false
-        };
-    },
-    computed: {
-        ...mapGetters({
-            product: "productDetail/getProductItem"
-        })
+    props: {
+        product: {
+            type: Array | Object,
+            default: []
+        }
     },
     methods: {
         valueBy(o, path, d = "") {

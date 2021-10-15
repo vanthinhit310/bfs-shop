@@ -72,13 +72,16 @@ import "vue-cool-lightbox/dist/vue-cool-lightbox.min.css";
 import { mapGetters } from "vuex";
 
 export default {
-    name: "ProductImage",
     components: {
         VueSlickCarousel,
         CoolLightBox
     },
     props: {
-        variation: String | Object
+        variation: String | Object,
+        product: {
+            type: Array | Object,
+            default: []
+        }
     },
     data() {
         return {
@@ -95,11 +98,6 @@ export default {
                 slidesToScroll: 5
             }
         };
-    },
-    computed: {
-        ...mapGetters({
-            product: "productDetail/getProductItem"
-        })
     },
     mounted() {
         this.activeImage = _.get(this.product, "thumbnail");
@@ -119,11 +117,11 @@ export default {
         }
     },
     watch: {
-        product(after) {
-            this.activeImage = _.get(after, "thumbnail");
-            this.images = _.get(after, "images");
-            this.big_images = _.get(after, "big_images");
-        },
+        // product(after) {
+        //     this.activeImage = _.get(after, "thumbnail");
+        //     this.images = _.get(after, "images");
+        //     this.big_images = _.get(after, "big_images");
+        // },
         variation() {
             if (!!this.variation) {
                 this.images = _.get(this.variation, "image_with_sizes.product-thumb");

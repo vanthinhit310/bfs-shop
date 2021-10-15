@@ -93,7 +93,12 @@ import VueNumericInput from "vue-numeric-input";
 import { mapGetters } from "vuex";
 
 export default {
-    name: "ProductInfo",
+    props: {
+        product: {
+            type: Array | Object,
+            default: []
+        }
+    },
     components: {
         VueNumericInput
     },
@@ -107,11 +112,6 @@ export default {
             attributes: {},
             arrayAttrs: []
         };
-    },
-    computed: {
-        ...mapGetters({
-            product: "productDetail/getProductItem"
-        })
     },
     mounted() {
         let attributeUseds = this.product.variations.map(element => {
@@ -149,19 +149,19 @@ export default {
             this.arrayAttrs = _.values(this.attributes);
             this.$emit("attributeChange", this.arrayAttrs);
         }
-    },
-    watch: {
-        product() {
-            let attributeUseds = this.product.variations.map(element => {
-                let arr = element.attributes.map(el => {
-                    return el.id;
-                });
-                return _.union(arr);
-            });
-            this.usedAttribute = _.uniq(_.flattenDepth(attributeUseds));
-            this.processing = false;
-        }
     }
+    // watch: {
+    //     product() {
+    //         let attributeUseds = this.product.variations.map(element => {
+    //             let arr = element.attributes.map(el => {
+    //                 return el.id;
+    //             });
+    //             return _.union(arr);
+    //         });
+    //         this.usedAttribute = _.uniq(_.flattenDepth(attributeUseds));
+    //         this.processing = false;
+    //     }
+    // }
 };
 </script>
 
