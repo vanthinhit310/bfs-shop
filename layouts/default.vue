@@ -1,5 +1,6 @@
 <template>
     <section class="main-wrapper">
+        <div id="fb-root"></div>
         <a-layout :style="{ background: '#fff' }">
             <a-layout-header :style="{ position: 'fixed', zIndex: 15, width: '100%' }">
                 <Header />
@@ -12,6 +13,8 @@
             </a-layout-footer>
         </a-layout>
         <a-back-top />
+        <FacebookCustomerChat />
+        <FacebookPage />
     </section>
 </template>
 
@@ -19,10 +22,14 @@
 import Header from "@/components/Partials/Header";
 import Footer from "@/components/Partials/Footer";
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import FacebookCustomerChat from "~/components/Sub/FacebookCustomerChat";
+import FacebookPage from "~/components/Sub/FacebookPage";
 export default {
     components: {
         Header,
-        Footer
+        Footer,
+        FacebookCustomerChat,
+        FacebookPage
     },
     async fetch() {
         try {
@@ -41,6 +48,9 @@ export default {
         ...mapGetters({
             isLoading: "baseComponents/getLoadingState"
         })
+    },
+    mounted() {
+        console.log(window.FB);
     },
     methods: {
         ...mapActions("home", ["getSettings"]),

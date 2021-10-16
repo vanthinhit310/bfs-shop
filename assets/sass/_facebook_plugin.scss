@@ -1,0 +1,41 @@
+.main-wrapper {
+    position: relative;
+    .facebook-page-container {
+        transition: all 1s ease;
+        position: fixed;
+        cursor: pointer;
+        left: -302px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        flex-direction: row-reverse;
+        button {
+            display: inline-flex;
+            position: absolute;
+            top: 50%;
+            left: 264px;
+            transform: rotate(-90deg);
+            padding: 10px 25px;
+            font-weight: bold;
+            font-size: 16px;
+            color: white;
+            background-color: #4c69ba;
+            background-image: linear-gradient(#4c69ba, #3b55a0);
+            border: none;
+            cursor: pointer;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .facebook-embed {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            height: 450px;
+            width: 300px;
+            background-color: $--white;
+        }
+    }
+
+    .facebook-page-container.active {
+        left: 0;
+    }
+}

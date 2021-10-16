@@ -16,14 +16,15 @@ export default {
             { rel: "preconnect", href: "https://fonts.googleapis.com" },
             { rel: "preconnect", href: "https://fonts.gstatic.com" },
             { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" }
-        ]
+        ],
+        script: [{ src: "/js/fb-sdk.js" }]
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
     css: ["@/assets/packages/ant.less", "@/assets/sass/app.scss"],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: ["@/plugins/antd-ui", "@/plugins/axios", { src: "~/plugins/vue-fb-customer-chat.js", ssr: false }],
+    plugins: ["@/plugins/antd-ui", "@/plugins/axios"],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: true,
