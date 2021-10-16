@@ -23,13 +23,13 @@ export default {
     css: ["@/assets/packages/ant.less", "@/assets/sass/app.scss"],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: ["@/plugins/antd-ui", "@/plugins/axios"],
+    plugins: ["@/plugins/antd-ui", "@/plugins/axios", { src: "~/plugins/vue-fb-customer-chat.js", ssr: false }],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: true,
 
     // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-    buildModules: [],
+    buildModules: ["@nuxtjs/ngrok"],
 
     // Modules: https://go.nuxtjs.dev/config-modules
     modules: [
@@ -88,5 +88,8 @@ export default {
         color: "#3B8070",
         background: "white"
     },
-    pageTransition: "page"
+    pageTransition: "page",
+    ngrok: {
+        authtoken: process.env.NGROK_AUTHTOKEN
+    }
 };
