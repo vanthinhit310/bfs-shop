@@ -10,7 +10,8 @@
             :maskClosable="false"
             :confirm-loading="processing"
             @ok="handleOk"
-            @cancel="handleCancel">
+            @cancel="handleCancel"
+        >
             <a-form ref="contactForm" id="contactform" :form="form">
                 <a-form-item>
                     <a-input v-decorator="['name', { rules: [{ required: true, message: 'Vui lòng nhập tên của bạn!' }] }]" placeholder="Tên của bạn">
@@ -23,7 +24,8 @@
                             'phone',
                             { rules: [{ required: true, pattern: /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/, len: 10, message: 'Số điện thoại không hợp lệ!' }] }
                         ]"
-                        placeholder="Số điện thoại">
+                        placeholder="Số điện thoại"
+                    >
                         <a-icon slot="prefix" type="phone" style="color: rgba(0, 0, 0, 0.25)" />
                     </a-input>
                 </a-form-item>
@@ -69,17 +71,17 @@ export default {
                     }
                     this.processing = true;
                     const response = await this.postContact(values);
-                    if (!response.error) {
+                    if (!response.data.error) {
                         this.$notification.success({
                             message: "System Notification",
-                            description: response.message
+                            description: response.data.message
                         });
                     }
                     this.processing = false;
                     this.closeForm();
                 });
             } catch (e) {
-                this.$notification.success({
+                this.$notification.error({
                     message: "System Notification",
                     description: e.message
                 });
