@@ -10,7 +10,8 @@
             :maskClosable="false"
             :confirm-loading="processing"
             @ok="handleOk"
-            @cancel="handleCancel">
+            @cancel="handleCancel"
+        >
             <a-form ref="newsletterForm" id="newsletterform" :form="form">
                 <a-form-item>
                     <a-input v-decorator="['email', { rules: [{ required: true, pattern: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/, message: 'Email không hợp lệ!' }] }]" type="email" placeholder="Email">
@@ -51,10 +52,10 @@ export default {
                     }
                     this.processing = true;
                     const response = await this.subscribeNewsletter(values);
-                    if (!response.error) {
+                    if (!response.data.error) {
                         this.$notification.success({
                             message: "System Notification",
-                            description: response.message
+                            description: response.data.message
                         });
                     }
                     this.processing = false;
