@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  nuxt:
+    build: .
+    container_name: nuxt
+    restart: always
+    env_file: .env
+    command: "yarn run start"
+    networks:
+      - flat-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "81:81"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - nuxt
+    networks:
+      - flat-network
+
+networks:
+  flat-network:
