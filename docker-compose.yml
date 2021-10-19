@@ -17,6 +17,8 @@ services:
       - "81:81"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl/:/etc/nginx/ssl/
+      - ./nginx/default.d/:/etc/nginx/default.d/
     depends_on:
       - nuxt
     networks:
