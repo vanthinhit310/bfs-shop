@@ -49,9 +49,6 @@ export default {
             isLoading: "baseComponents/getLoadingState"
         })
     },
-    mounted() {
-        console.log(window.FB);
-    },
     methods: {
         ...mapActions("home", ["getSettings"]),
         ...mapActions("home", ["getProductCategories"]),
